@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devis personnalisé — L'Atelier Curieux</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.card{background:#fff;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:600px;box-shadow:0 2px 16px rgba(0,0,0,.07)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid #ebe9e3}
+.brand-icon{width:34px;height:34px;background:#4a7c6f;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.brand-name{font-size:15px;font-weight:600;color:#1a1a1a}
+.brand-sub{font-size:12px;color:#888;margin-top:1px}
+.prog-bar{height:3px;background:#ebe9e3;border-radius:2px;margin-bottom:2rem;overflow:hidden}
+.prog-fill{height:100%;background:#4a7c6f;border-radius:2px;transition:width .4s ease}
+.step{display:none}.step.active{display:block}
+.q-num{font-size:11px;font-weight:600;color:#aaa;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.q-label{font-size:20px;font-weight:600;color:#1a1a1a;line-height:1.35;margin-bottom:.4rem}
+.q-hint{font-size:13px;color:#777;margin-bottom:1.5rem;line-height:1.55}
+.choices{display:grid;gap:8px}
+.choice{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1.5px solid #ebe9e3;border-radius:10px;cursor:pointer;transition:border-color .13s,background .13s;background:#fff}
+.choice:hover{border-color:#4a7c6f;background:#f2f7f6}
+.choice.selected{border-color:#4a7c6f;background:#edf4f2}
+.choice input[type=radio]{accent-color:#4a7c6f;margin-top:3px;flex-shrink:0;width:15px;height:15px}
+.ct{font-size:14px;color:#1a1a1a;font-weight:500;line-height:1.4}
+.cs{font-size:12px;color:#888;margin-top:3px;line-height:1.45}
+.badge{display:inline-flex;font-size:11px;font-weight:600;padding:2px 9px;border-radius:4px;margin-top:5px}
+.b-red{background:#fce8e8;color:#b02020}
+.b-orange{background:#fef3e0;color:#9a5c00}
+.b-green{background:#e8f3e0;color:#2d6b1a}
+.b-blue{background:#e6f1fb;color:#185fa5}
+.info-box{border-radius:10px;padding:13px 15px;margin-top:1rem;font-size:13px;line-height:1.6;display:none}
+.info-box.show{display:block}
+.info-b2c{background:#eef5fd;border-left:3px solid #378add;color:#0c447c}
+.info-b2c strong{display:block;margin-bottom:4px;font-weight:600}
+.info-neutral{background:#f5f4f0;border-left:3px solid #ccc;color:#555;padding:12px 14px;border-radius:10px;margin-top:10px;font-size:13px;line-height:1.6;display:none}
+.info-neutral strong{display:block;margin-bottom:3px;font-weight:600;color:#333}
+.info-neutral.show{display:block}
+.sub-block{margin-top:.85rem;padding:14px;background:#fdf5f0;border-radius:10px;border-left:3px solid #c4622d;display:none}
+.sub-block.show{display:block}
+.sub-label{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:.7rem}
+.sub-choices{display:grid;gap:7px}
+.sub-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #ebe9e3;border-radius:8px;cursor:pointer;background:#fff;transition:border-color .12s,background .12s}
+.sub-choice:hover{border-color:#4a7c6f;background:#f2f7f6}
+.sub-choice.selected{border-color:#4a7c6f;background:#edf4f2}
+.sub-choice input{accent-color:#4a7c6f;margin-top:2px;flex-shrink:0;width:14px;height:14px}
+.sub-choice span{font-size:13px;color:#2a2a2a;line-height:1.45}
+.caisse-alert{background:#fff8f0;border:1px solid #f0c090;border-radius:8px;padding:11px 13px;margin-top:9px;font-size:13px;color:#7a3a10;line-height:1.55;display:none}
+.caisse-alert.show{display:block}
+.caisse-alert strong{display:block;margin-bottom:3px;font-weight:600}
+.field-wrap{margin-bottom:.95rem}
+.field-wrap label{display:block;font-size:13px;font-weight:500;color:#555;margin-bottom:6px}
+.field-wrap input{width:100%;padding:10px 13px;font-size:14px;border:1.5px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;transition:border-color .15s}
+.field-wrap input:focus{outline:none;border-color:#4a7c6f;box-shadow:0 0 0 3px rgba(74,124,111,.1)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.25rem;border-top:1px solid #ebe9e3}
+.btn-back{background:#fff;border:1.5px solid #ddd;padding:10px 20px;border-radius:8px;font-size:13px;color:#666;cursor:pointer;font-weight:500}
+.btn-back:hover{background:#f5f4f0}
+.btn-next{background:#4a7c6f;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;color:#fff;cursor:pointer}
+.btn-next:hover{background:#3a6259}
+.step-ctr{font-size:12px;color:#aaa}
+/* résultat */
+.r-name{font-size:22px;font-weight:700;color:#1a1a1a;letter-spacing:-.02em}
+.r-company{font-size:13px;color:#888;margin-top:3px;margin-bottom:1.25rem}
+.b2c-special{background:#eef5fd;border:1px solid #b5d4f4;border-radius:10px;padding:14px 16px;margin-bottom:1rem}
+.b2c-special-title{font-size:14px;font-weight:600;color:#185fa5;margin-bottom:6px}
+.b2c-special-body{font-size:13px;color:#0c447c;line-height:1.6}
+.score-card{background:#f5f4f0;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem}
+.score-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.score-big{font-size:32px;font-weight:700;color:#1a1a1a;line-height:1}
+.score-lbl{font-size:12px;color:#888;margin-top:4px}
+.r-badge{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.bg-green{background:#e8f3e0;color:#2d6b1a}
+.bg-orange{background:#fef3e0;color:#9a5c00}
+.bg-red{background:#fce8e8;color:#b02020}
+.bg-blue{background:#e6f1fb;color:#185fa5}
+.meter-bar{height:8px;background:#ddd;border-radius:4px;overflow:hidden;margin:4px 0 5px}
+.meter-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.meter-labels{display:flex;justify-content:space-between;font-size:10px;color:#aaa}
+.r-interp{font-size:13px;color:#666;line-height:1.6;margin-top:10px}
+.sec-title{font-size:12px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px}
+.recap-blk{border:1.5px solid #ebe9e3;border-radius:10px;padding:12px 15px;margin-bottom:1.25rem;background:#fff}
+.recap-line{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid #f0ede8}
+.recap-line:last-child{border:none}
+.rk{color:#888}.rv{color:#1a1a1a;font-weight:500;text-align:right;max-width:56%}
+.pack{border:1.5px solid #ebe9e3;border-radius:10px;padding:15px;background:#fff;margin-bottom:10px}
+.pack.rec{border-color:#4a7c6f;border-width:2px}
+.pack-rec-lbl{display:inline-block;background:#edf4f2;color:#4a7c6f;font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.pack-name{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:5px}
+.pack-desc{font-size:13px;color:#666;line-height:1.55}
+.pack-price{font-size:13px;color:#4a7c6f;font-weight:600;margin-top:8px}
+.cta-btn{display:block;width:100%;padding:14px;background:#c4622d;border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-align:center;margin-top:1.25rem}
+.cta-btn:hover{background:#a85220}
+.cta-note{font-size:11px;color:#aaa;text-align:center;margin-top:8px}
+.feedback-section{margin-top:2rem;padding-top:1.5rem;border-top:1px solid #ebe9e3}
+.feedback-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:.4rem}
+.feedback-sub{font-size:13px;color:#888;line-height:1.5;margin-bottom:1rem}
+.stars{display:flex;gap:8px;margin-bottom:1rem}
+.star{font-size:30px;cursor:pointer;color:#ddd;transition:color .1s;user-select:none;line-height:1}
+.star.on{color:#f5a623}
+.fb-textarea{width:100%;padding:10px 13px;font-size:13px;border:1.5px solid #ddd;border-radius:8px;resize:vertical;min-height:80px;font-family:inherit;color:#1a1a1a;line-height:1.5}
+.fb-textarea:focus{outline:none;border-color:#4a7c6f;box-shadow:0 0 0 3px rgba(74,124,111,.1)}
+.fb-btn{margin-top:.75rem;padding:9px 22px;background:#1a1a1a;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+.fb-btn:hover{background:#333}
+.fb-sent{display:none;background:#e8f3e0;color:#2d6b1a;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:500;margin-top:.75rem;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">
+    <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
+    <div><div class="brand-name">L'Atelier Curieux</div><div class="brand-sub">Conseil · Numérique · Facturation électronique</div></div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:12%"></div></div>
+
+  <!-- S1 Identité -->
+  <div class="step active" id="s1">
+    <div class="q-num">Étape 1 / 8</div>
+    <div class="q-label">Qui êtes-vous ?</div>
+    <div class="q-hint">Ces informations permettent de personnaliser votre devis et de vous recontacter sous 48h.</div>
+    <div class="field-wrap"><label>Prénom et nom</label><input type="text" id="f-nom" placeholder="Marie Dupont"></div>
+    <div class="field-wrap"><label>Entreprise / Raison sociale</label><input type="text" id="f-cie" placeholder="Boulangerie Dupont, Auto-entrepreneur Marie D…"></div>
+    <div class="field-wrap"><label>Email professionnel</label><input type="email" id="f-mail" placeholder="marie@dupont.fr"></div>
+    <div class="nav"><span class="step-ctr">1 / 8</span><button class="btn-next" onclick="go(2)">Suivant →</button></div>
+  </div>
+
+  <!-- S2 Profil métier -->
+  <div class="step" id="s2">
+    <div class="q-num">Étape 2 / 8</div>
+    <div class="q-label">Quel est votre profil d'activité ?</div>
+    <div class="q-hint">Choisissez ce qui vous ressemble le plus. Cela détermine vos obligations réelles face à la réforme.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="profil" value="alim_bc"><span>
+        <span class="ct">Alimentaire vente au détail — 100% particuliers (B2C)</span>
+        <span class="cs">Boulangerie, pâtisserie, chocolaterie, glacier, snack, food truck, épicerie, primeur, marché alimentaire, restauration rapide, bar…</span>
+        <span class="badge b-blue">Réception fournisseurs uniquement · Pas d'émission B2B</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="alim_bx"><span>
+        <span class="ct">Alimentaire mixte — particuliers ET professionnels</span>
+        <span class="cs">Traiteur événementiel, grossiste alimentaire, producteur vente directe aux pros, restaurant avec facturation entreprises, caviste pro…</span>
+        <span class="badge b-orange">Réception + émission B2B obligatoires</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="artisan"><span>
+        <span class="ct">Artisan / Commerçant de proximité</span>
+        <span class="cs">Fleuriste, coiffeur, esthéticienne, pressing, réparateur, cordonnier, bijoutier, opticien, librairie, auto-école…</span>
+        <span class="badge b-orange">Dépend de votre part de clientèle pro — à qualifier</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="btp"><span>
+        <span class="ct">BTP / Artisan du bâtiment</span>
+        <span class="cs">Maçon, électricien, plombier, menuisier, peintre, carreleur, couvreur, charpentier, paysagiste, second œuvre…</span>
+        <span class="badge b-red">Majorité B2B — obligation complète réception + émission</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="freelance"><span>
+        <span class="ct">Freelance / Micro-entrepreneur / Indépendant</span>
+        <span class="cs">Graphiste, développeur web, consultant, rédacteur, formateur, coach, photographe pro, traducteur, community manager, designer…</span>
+        <span class="badge b-orange">Émission obligatoire si TVA + clients professionnels</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="services"><span>
+        <span class="ct">Services aux entreprises (TPE / PME)</span>
+        <span class="cs">Cabinet de conseil, agence communication ou marketing, SSII / ESN, cabinet comptable, RH, recrutement, facility management…</span>
+        <span class="badge b-red">100% B2B — obligation complète dès septembre 2026</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="commerce"><span>
+        <span class="ct">Commerce / Distribution / Négoce</span>
+        <span class="cs">Grossiste, distributeur, import-export, e-commerce B2B, centrale d'achats, agent commercial, boutique avec clientèle professionnelle…</span>
+        <span class="badge b-red">B2B dominant — obligation complète</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="profil" value="autre"><span>
+        <span class="ct">Autre profil</span>
+        <span class="cs">Industrie, agriculture, santé, association loi 1901, profession libérale réglementée (avocat, médecin, architecte…), immobilier…</span>
+        <span class="badge b-orange">À qualifier selon votre mix B2B / B2C</span>
+      </span></label>
+    </div>
+    <div id="info-b2c" class="info-box info-b2c">
+      <strong>Ce que ça signifie concrètement pour vous</strong>
+      Vous vendez uniquement à des particuliers — vous n'avez <em>pas</em> à émettre de factures électroniques à vos clients. Mais dès le 1er septembre 2026, vous devrez <strong>recevoir</strong> les factures de vos fournisseurs (grossiste, boulangerie industrielle, distributeur…) via une Plateforme Agréée. Sans PA déclarée : 500 € + 1 000 €/trimestre d'amende. Un accompagnement simple et ciblé suffit dans votre cas.
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(1)">← Retour</button><span class="step-ctr">2 / 8</span><button class="btn-next" onclick="go(3)">Suivant →</button></div>
+  </div>
+
+  <!-- S3 TVA -->
+  <div class="step" id="s3">
+    <div class="q-num">Étape 3 / 8</div>
+    <div class="q-label">Quel est votre statut vis-à-vis de la TVA ?</div>
+    <div class="q-hint">La réforme concerne uniquement les entreprises assujetties à la TVA. Ce point est décisif.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="tva" value="assujetti" onchange="onTvaChange()"><span>
+        <span class="ct">Je suis assujetti à la TVA — je la facture et la déclare</span>
+        <span class="cs">Régime réel normal ou simplifié · CA supérieur aux seuils de franchise</span>
+        <span class="badge b-red">Pleinement concerné par la réforme</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="tva" value="franchise" onchange="onTvaChange()"><span>
+        <span class="ct">Je suis en franchise en base de TVA (article 293B du CGI)</span>
+        <span class="cs">Mentions "TVA non applicable, art. 293B CGI" sur vos factures · Micro-entrepreneur sous les seuils</span>
+        <span class="badge b-blue">Partiellement concerné — réception uniquement si fournisseurs pro</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="tva" value="nesaispas" onchange="onTvaChange()"><span>
+        <span class="ct">Je ne sais pas / Je veux vérifier</span>
+        <span class="cs">Votre expert-comptable ou notre diagnostic peut clarifier votre situation</span>
+      </span></label>
+    </div>
+    <div class="info-neutral show" id="info-tva"></div>
+    <div class="nav"><button class="btn-back" onclick="go(2)">← Retour</button><span class="step-ctr">3 / 8</span><button class="btn-next" onclick="go(4)">Suivant →</button></div>
+  </div>
+
+  <!-- S4 Volume -->
+  <div class="step" id="s4">
+    <div class="q-num">Étape 4 / 8</div>
+    <div class="q-label">Quel est votre volume mensuel de factures ?</div>
+    <div class="q-hint">Fournisseurs entrants + clients pro sortants (B2B uniquement). Les tickets de caisse particuliers ne comptent pas.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="volume" value="1"><span><span class="ct">Moins de 20 factures / mois</span><span class="cs">Petite structure — flux limité</span></span></label>
+      <label class="choice"><input type="radio" name="volume" value="2"><span><span class="ct">Entre 20 et 100 factures / mois</span><span class="cs">TPE classique — flux modéré</span></span></label>
+      <label class="choice"><input type="radio" name="volume" value="3"><span><span class="ct">Plus de 100 factures / mois</span><span class="cs">Flux important — criticité élevée, automatisation recommandée</span></span></label>
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(3)">← Retour</button><span class="step-ctr">4 / 8</span><button class="btn-next" onclick="go(5)">Suivant →</button></div>
+  </div>
+
+  <!-- S5 Mode facturation -->
+  <div class="step" id="s5">
+    <div class="q-num">Étape 5 / 8</div>
+    <div class="q-label" id="s5-lbl">Comment émettez-vous vos factures aujourd'hui ?</div>
+    <div class="q-hint" id="s5-hint">Sélectionnez votre situation principale. Si vous utilisez un logiciel de caisse, un volet complémentaire s'affichera.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="mode" value="papier" onchange="onModeChange()"><span>
+        <span class="ct">Papier ou fichier Word / Excel</span>
+        <span class="cs">Factures saisies et imprimées manuellement</span>
+        <span class="badge b-red">Non conforme dès sept. 2026</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="mode" value="pdf" onchange="onModeChange()"><span>
+        <span class="ct">PDF généré manuellement (Word, Canva, email…)</span>
+        <span class="cs">Fichier PDF sans données structurées — envoyé par email</span>
+        <span class="badge b-red">Le PDF simple sera rejeté dès sept. 2026</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="mode" value="caisse" onchange="onModeChange()"><span>
+        <span class="ct">Logiciel de caisse (TPV / POS)</span>
+        <span class="cs">Lightspeed, Zelty, L'Addition, Sumeria, Hiboutik, Square, SumUp, Tactill, Clyo, Casio…</span>
+        <span class="badge b-orange">Conformité variable selon éditeur — vérification requise</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="mode" value="compta" onchange="onModeChange()"><span>
+        <span class="ct">Logiciel comptable ou ERP</span>
+        <span class="cs">Sage, Cegid, EBP, Pennylane, Tiime, Indy, Axonaut, QuickBooks, Sellsy…</span>
+        <span class="badge b-orange">Compatibilité PA à vérifier selon version</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="mode" value="pasdefacture" onchange="onModeChange()"><span>
+        <span class="ct">Je n'émets pas de factures — vente B2C uniquement</span>
+        <span class="cs">Tickets de caisse ou reçus uniquement · Aucune facturation de professionnels</span>
+        <span class="badge b-blue">Seule la réception fournisseurs est à gérer</span>
+      </span></label>
+      <label class="choice"><input type="radio" name="mode" value="conforme" onchange="onModeChange()"><span>
+        <span class="ct">Solution déjà compatible (Factur-X, UBL ou CII)</span>
+        <span class="cs">Flux structurés déjà en place ou PA déjà raccordée</span>
+        <span class="badge b-green">Bonne base — vérification du raccordement PA</span>
+      </span></label>
+    </div>
+    <!-- Volet caisse -->
+    <div id="caisse-block" class="sub-block">
+      <div class="sub-label">Précisez votre situation avec votre logiciel de caisse</div>
+      <div class="sub-choices">
+        <label class="sub-choice"><input type="radio" name="caisse" value="noncertifie" onchange="updateCaisseAlert()"><span>Mon logiciel <strong>n'est pas certifié NF525</strong> ou je ne sais pas</span></label>
+        <label class="sub-choice"><input type="radio" name="caisse" value="certifie_nonconnecte" onchange="updateCaisseAlert()"><span>Logiciel <strong>certifié NF525</strong>, pas encore raccordé à une Plateforme Agréée</span></label>
+        <label class="sub-choice"><input type="radio" name="caisse" value="certifie_connecte" onchange="updateCaisseAlert()"><span>Logiciel <strong>certifié NF525 ET raccordé à une PA</strong></span></label>
+        <label class="sub-choice"><input type="radio" name="caisse" value="tickets_seuls" onchange="updateCaisseAlert()"><span>J'émets <strong>uniquement des tickets de caisse</strong> (100% particuliers)</span></label>
+      </div>
+      <div id="caisse-alert" class="caisse-alert"></div>
+    </div>
+    <!-- Volet pas de facture -->
+    <div id="b2c-info" class="info-box info-b2c" style="margin-top:.85rem">
+      <strong>Vous êtes concerné uniquement pour la réception</strong>
+      Vous n'avez pas à émettre de factures électroniques à vos clients. En revanche, dès le 1er septembre 2026, vous devrez <strong>recevoir et traiter</strong> les factures de vos fournisseurs (grossiste, distributeur, fournisseur de matières premières…) via une Plateforme Agréée. Sans PA : 500 € puis 1 000 €/trimestre d'amende. Un accompagnement léger suffit.
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(4)">← Retour</button><span class="step-ctr">5 / 8</span><button class="btn-next" onclick="go(6)">Suivant →</button></div>
+  </div>
+
+  <!-- S6 PA -->
+  <div class="step" id="s6">
+    <div class="q-num">Étape 6 / 8</div>
+    <div class="q-label">Avez-vous déjà choisi une Plateforme Agréée ?</div>
+    <div class="q-hint">La PA est le canal obligatoire pour recevoir — et émettre si vous avez des clients pros — des factures électroniques. 108 plateformes sont immatriculées par la DGFiP.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="pa" value="1"><span><span class="ct">Oui, déjà choisie et raccordée</span><span class="cs">Vous êtes en avance — une vérification de conformité reste recommandée</span></span></label>
+      <label class="choice"><input type="radio" name="pa" value="2"><span><span class="ct">En cours de sélection</span><span class="cs">Face aux 108 PA immatriculées, un comparatif indépendant peut vous faire gagner du temps et éviter les erreurs</span></span></label>
+      <label class="choice"><input type="radio" name="pa" value="3"><span><span class="ct">Non, pas encore commencé</span><span class="cs">Sans PA déclarée : 500 € d'amende puis 1 000 €/trimestre</span></span></label>
+      <label class="choice"><input type="radio" name="pa" value="3"><span><span class="ct">Je ne connais pas ce terme</span><span class="cs">C'est précisément pour ça qu'un diagnostic s'impose en priorité</span></span></label>
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(5)">← Retour</button><span class="step-ctr">6 / 8</span><button class="btn-next" onclick="go(7)">Suivant →</button></div>
+  </div>
+
+  <!-- S7 Référent -->
+  <div class="step" id="s7">
+    <div class="q-num">Étape 7 / 8</div>
+    <div class="q-label">Qui pilotera cette transition en interne ?</div>
+    <div class="q-hint">L'existence ou non d'un référent détermine le niveau d'accompagnement nécessaire.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="ref" value="1"><span><span class="ct">Un responsable identifié et disponible</span><span class="cs">Comptable, DAF, office manager ou gérant avec du temps dédié</span></span></label>
+      <label class="choice"><input type="radio" name="ref" value="2"><span><span class="ct">Quelqu'un, mais déjà très chargé</span><span class="cs">La personne existe mais n'a pas de marge pour piloter ce projet</span></span></label>
+      <label class="choice"><input type="radio" name="ref" value="3"><span><span class="ct">Personne de désigné — je gère seul(e)</span><span class="cs">Structure légère, micro-entreprise, pas de back-office dédié</span></span></label>
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(6)">← Retour</button><span class="step-ctr">7 / 8</span><button class="btn-next" onclick="go(8)">Suivant →</button></div>
+  </div>
+
+  <!-- S8 Horizon -->
+  <div class="step" id="s8">
+    <div class="q-num">Étape 8 / 8</div>
+    <div class="q-label">Quel est votre horizon de mise en conformité ?</div>
+    <div class="q-hint">Cela nous aide à calibrer l'intensité et le budget de l'accompagnement proposé.</div>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="horizon" value="urgent"><span><span class="ct">Le plus tôt possible — c'est urgent</span><span class="cs">Intervention prioritaire, démarrage sous 2 semaines</span></span></label>
+      <label class="choice"><input type="radio" name="horizon" value="3mois"><span><span class="ct">Dans les 3 prochains mois</span><span class="cs">Accompagnement standard, planning adapté à votre activité</span></span></label>
+      <label class="choice"><input type="radio" name="horizon" value="explore"><span><span class="ct">Je veux d'abord comprendre mes obligations</span><span class="cs">Diagnostic flash sans engagement pour clarifier avant de décider</span></span></label>
+    </div>
+    <div class="nav"><button class="btn-back" onclick="go(7)">← Retour</button><span class="step-ctr">8 / 8</span><button class="btn-next" onclick="showResult()">Voir mon devis →</button></div>
+  </div>
+
+  <!-- Résultat -->
+  <div class="step" id="sR">
+    <div class="r-name" id="r-name"></div>
+    <div class="r-company" id="r-company"></div>
+    <div id="r-b2c"></div>
+    <div class="score-card">
+      <div class="score-row">
+        <div><div class="score-big" id="r-score"></div><div class="score-lbl">Score de priorité / 30</div></div>
+        <div class="r-badge" id="r-badge"></div>
+      </div>
+      <div class="meter-bar"><div class="meter-fill" id="r-meter"></div></div>
+      <div class="meter-labels"><span>0 — Préparé</span><span>12</span><span>20</span><span>30 — Critique</span></div>
+      <div class="r-interp" id="r-interp"></div>
+    </div>
+    <div class="sec-title">Votre situation</div>
+    <div class="recap-blk" id="r-recap"></div>
+    <div class="sec-title">Accompagnement recommandé</div>
+    <div id="r-packs"></div>
+    <button class="cta-btn" id="cta-main">Envoyer ma demande de devis →</button>
+    <div class="cta-note">Réponse sous 48h · Sans engagement · 100% confidentiel</div>
+    <div class="feedback-section">
+      <div class="feedback-title">Donnez votre avis — version bêta</div>
+      <div class="feedback-sub">Vous testez ce formulaire pour aider Benjamin à l'améliorer avant le lancement. Votre retour compte vraiment !</div>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+      </div>
+      <textarea class="fb-textarea" id="fb-txt" placeholder="Questions claires ? Quelque chose de manquant ou de confus ? Votre profil était-il bien représenté ? Durée ressentie ? Tout commentaire est précieux."></textarea>
+      <button class="fb-btn" onclick="sendFeedback()">Envoyer mon retour</button>
+      <div class="fb-sent" id="fb-sent">Merci beaucoup ! Votre retour a été transmis à Benjamin Picard. Il en tiendra compte pour améliorer le formulaire avant le lancement officiel.</div>
+    </div>
+  </div>
+</div>
+<script>
+var starVal=0;
+document.getElementById('stars').querySelectorAll('.star').forEach(function(s){
+  s.addEventListener('mouseover',function(){var v=parseInt(this.dataset.v);document.getElementById('stars').querySelectorAll('.star').forEach(function(x,i){x.classList.toggle('on',i<v);});});
+  s.addEventListener('mouseout',function(){document.getElementById('stars').querySelectorAll('.star').forEach(function(x,i){x.classList.toggle('on',i<starVal);});});
+  s.addEventListener('click',function(){starVal=parseInt(this.dataset.v);document.getElementById('stars').querySelectorAll('.star').forEach(function(x,i){x.classList.toggle('on',i<starVal);});});
+});
+function sendFeedback(){
+  var note=starVal>0?starVal+'/5':'Non noté';
+  var txt=document.getElementById('fb-txt').value||'Aucun commentaire';
+  var nom=document.getElementById('f-nom').value||'Anonyme';
+  var cie=document.getElementById('f-cie').value||'—';
+  var profil=gv('profil')||'—';
+  var subject=encodeURIComponent('[Bêta test] Retour formulaire — '+note+' — '+nom);
+  var body=encodeURIComponent('Testeur : '+nom+'\nStructure : '+cie+'\nProfil sélectionné : '+profil+'\nNote : '+note+'\n\nCommentaire :\n'+txt);
+  window.location.href='mailto:benjamin@lateliercurieux.fr?subject='+subject+'&body='+body;
+  document.getElementById('fb-sent').style.display='block';
+}
+var progs=[12,25,37,50,62,75,87,100];
+function go(n){
+  document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(n<=8?'s'+n:'sR').classList.add('active');
+  document.getElementById('prog').style.width=(n<=8?progs[n-1]:100)+'%';
+  window.scrollTo(0,0);
+}
+function gv(n){var e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:null;}
+function onProfilChange(){
+  var v=gv('profil');
+  document.getElementById('info-b2c').classList.toggle('show',v==='alim_bc');
+}
+function onTvaChange(){
+  var v=gv('tva');
+  var box=document.getElementById('info-tva');
+  var msgs={
+    franchise:'<strong>Franchise en base de TVA (art. 293B)</strong>Vous n\'êtes pas tenu d\'émettre des factures électroniques. En revanche, si vos fournisseurs sont assujettis à la TVA, vous devrez pouvoir recevoir leurs factures via une PA dès septembre 2026. Un accompagnement minimal suffit.',
+    nesaispas:'<strong>À clarifier avant tout</strong>Ce point conditionne l\'ensemble de vos obligations. Votre expert-comptable est la référence. Notre diagnostic peut vous aider à en avoir une première idée.'
+  };
+  if(msgs[v]){box.innerHTML=msgs[v];box.style.display='block';}
+  else box.style.display='none';
+}
+function onModeChange(){
+  var v=gv('mode');
+  document.getElementById('caisse-block').classList.toggle('show',v==='caisse');
+  document.getElementById('b2c-info').classList.toggle('show',v==='pasdefacture');
+  if(v!=='caisse')document.getElementById('caisse-alert').classList.remove('show');
+}
+function updateCaisseAlert(){
+  var v=gv('caisse');
+  var box=document.getElementById('caisse-alert');
+  var msgs={
+    noncertifie:'<strong>Point de vigilance majeur.</strong> Un logiciel non certifié NF525 ne peut pas générer de factures conformes. Une migration vers un outil certifié sera probablement nécessaire avant septembre 2026.',
+    certifie_nonconnecte:'<strong>Bonne base, action requise.</strong> La certification NF525 garantit l\'intégrité des données, mais votre logiciel doit encore être raccordé à une Plateforme Agréée pour les flux B2B.',
+    certifie_connecte:'<strong>Vous êtes sur la bonne voie.</strong> Vérifiez que le raccordement couvre bien les flux entrants ET sortants, et que Factur-X / UBL sont activés dans votre configuration.',
+    tickets_seuls:'<strong>Cas B2C.</strong> Ces flux sont hors obligation de facturation électronique. Tout flux B2B (fournisseurs, grossistes, clients professionnels) reste soumis à la réforme.'
+  };
+  if(msgs[v]){box.innerHTML=msgs[v];box.classList.add('show');}
+  else box.classList.remove('show');
+}
+document.querySelectorAll('.choice').forEach(function(c){
+  c.addEventListener('click',function(){
+    var inp=c.querySelector('input[type=radio]');
+    if(!inp)return;
+    document.querySelectorAll('input[name="'+inp.name+'"]').forEach(function(r){var p=r.closest('.choice,.sub-choice');if(p)p.classList.remove('selected');});
+    inp.checked=true;c.classList.add('selected');
+    if(inp.name==='mode')onModeChange();
+    if(inp.name==='profil')onProfilChange();
+    if(inp.name==='tva')onTvaChange();
+  });
+});
+document.querySelectorAll('.sub-choice').forEach(function(c){
+  c.addEventListener('click',function(){
+    var inp=c.querySelector('input[type=radio]');
+    if(!inp)return;
+    document.querySelectorAll('input[name="'+inp.name+'"]').forEach(function(r){var p=r.closest('.sub-choice');if(p)p.classList.remove('selected');});
+    inp.checked=true;c.classList.add('selected');updateCaisseAlert();
+  });
+});
+function showResult(){
+  var profil=gv('profil')||'artisan';
+  var tva=gv('tva')||'assujetti';
+  var volume=parseInt(gv('volume'))||2;
+  var mode=gv('mode')||'pdf';
+  var caisse=gv('caisse');
+  var pa=parseInt(gv('pa'))||2;
+  var ref=parseInt(gv('ref'))||2;
+  var horizon=gv('horizon')||'3mois';
+  var isB2C=(profil==='alim_bc')||(mode==='pasdefacture');
+  var isFranchise=tva==='franchise';
+  var isCaisse=mode==='caisse';
+  var isFreelance=profil==='freelance';
+  var mScore=2;
+  if(mode==='papier'||mode==='pdf')mScore=3;
+  else if(mode==='caisse'){if(caisse==='noncertifie')mScore=3;else if(caisse==='certifie_nonconnecte')mScore=2;else mScore=1;}
+  else if(mode==='compta')mScore=2;
+  else if(mode==='conforme'||mode==='pasdefacture')mScore=1;
+  if(isFranchise)mScore=Math.max(1,mScore-1);
+  var raw=volume+mScore+pa+ref;
+  var full=Math.round(raw/12*30);
+  if(isB2C&&isFranchise)full=Math.min(full,10);
+  var nom=document.getElementById('f-nom').value||'Votre profil';
+  var cie=document.getElementById('f-cie').value||'';
+  var mail=document.getElementById('f-mail').value||'';
+  document.getElementById('r-name').textContent=nom;
+  document.getElementById('r-company').textContent=cie;
+  document.getElementById('r-score').textContent=full;
+  document.getElementById('r-meter').style.width=(full/30*100)+'%';
+  var badge,bclass,interp,mc;
+  if(isB2C){badge='Accompagnement simplifié';bclass='bg-blue';mc='#378add';interp='Votre cas est plus simple que la majorité. Vous n\'avez pas à émettre de factures électroniques. L\'essentiel est de mettre en place la réception des factures fournisseurs via une Plateforme Agréée avant le 1er septembre 2026.';}
+  else if(full<=12){badge='Planification possible';bclass='bg-green';mc='#4a7c6f';interp='Votre situation est relativement maîtrisée. Un accompagnement léger suffit pour sécuriser votre conformité avant les deux échéances.';}
+  else if(full<=20){badge='Action recommandée sous 3 mois';bclass='bg-orange';mc='#c4622d';interp='Des risques concrets ont été identifiés. Une intervention planifiée dans les 3 prochains mois permet d\'éviter amendes et blocages opérationnels.';}
+  else{badge='Intervention urgente';bclass='bg-red';mc='#c0392b';interp='Non-conformité probable à l\'échéance de septembre 2026. Mobilisation immédiate nécessaire pour éviter le rejet de vos factures et les sanctions financières.';}
+  document.getElementById('r-badge').textContent=badge;
+  document.getElementById('r-badge').className='r-badge '+bclass;
+  document.getElementById('r-interp').textContent=interp;
+  document.getElementById('r-meter').style.background=mc;
+  var b2cDiv=document.getElementById('r-b2c');
+  if(isB2C){b2cDiv.innerHTML='<div class="b2c-special"><div class="b2c-special-title">Votre profil : réception uniquement</div><div class="b2c-special-body">Vous vendez exclusivement à des particuliers — vous n\'êtes pas tenu d\'émettre des factures électroniques à vos clients. Votre seule obligation est de pouvoir <strong>recevoir les factures de vos fournisseurs</strong> via une Plateforme Agréée à partir du 1er septembre 2026. Un accompagnement court et ciblé suffit.</div></div>';}
+  else b2cDiv.innerHTML='';
+  var pm={alim_bc:'Alimentaire B2C (snack, boulangerie…)',alim_bx:'Alimentaire mixte B2B+B2C',artisan:'Artisan / Commerçant de proximité',btp:'BTP / Artisan du bâtiment',freelance:'Freelance / Micro-entrepreneur',services:'Services aux entreprises',commerce:'Commerce / Négoce',autre:'Autre profil'};
+  var mm={papier:'Papier / Word — non conforme',pdf:'PDF simple — non conforme',caisse:'Logiciel de caisse (TPV)',compta:'Logiciel comptable / ERP',pasdefacture:'Pas d\'émission (B2C uniquement)',conforme:'Solution déjà compatible'};
+  var cm={noncertifie:'Non certifié NF525',certifie_nonconnecte:'Certifié NF525, non raccordé',certifie_connecte:'Certifié NF525 + PA raccordée',tickets_seuls:'Tickets B2C uniquement'};
+  var paM={'1':'PA choisie et raccordée','2':'PA en sélection','3':'PA non choisie / inconnue'};
+  var refM={'1':'Référent disponible','2':'Référent surchargé','3':'Aucun référent'};
+  var hM={urgent:'Urgent',  '3mois':'Sous 3 mois',explore:'Phase d\'exploration'};
+  var tvM={assujetti:'Assujetti à la TVA',franchise:'Franchise en base (art. 293B)',nesaispas:'À clarifier'};
+  var rows=[['Profil',pm[profil]||profil],['Statut TVA',tvM[tva]||tva],['Volume factures',volume===1?'< 20/mois':volume===2?'20–100/mois':'> 100/mois'],['Mode de facturation',mm[mode]||mode]];
+  if(isCaisse&&caisse)rows.push(['Logiciel de caisse',cm[caisse]||caisse]);
+  rows.push(['Plateforme Agréée',paM[String(pa)]||'—'],['Référent interne',refM[String(ref)]||'—'],['Horizon',hM[horizon]||horizon]);
+  document.getElementById('r-recap').innerHTML=rows.map(function(r){return'<div class="recap-line"><span class="rk">'+r[0]+'</span><span class="rv">'+r[1]+'</span></div>';}).join('');
+  var packs=[];
+  if(isB2C||isFranchise||horizon==='explore'||full<=12){
+    packs.push({name:'Diagnostic Flash — Starter',desc:'1h de cadrage pour identifier votre situation réelle et vous orienter vers la Plateforme Agréée adaptée.'+(isB2C?' Cas B2C : accompagnement ciblé réception uniquement, tarif réduit.':'')+(isFreelance?' Version adaptée micro-entrepreneur et indépendant.':''),price:'À partir de 150€',rec:true});
+  }else if(full<=20){
+    packs.push({name:'Audit Express — Pack 1',desc:'État des lieux complet : outils, flux, écarts de conformité, plan d\'action priorisé sous 48h.'+(isCaisse?' Inclut audit de compatibilité de votre logiciel de caisse.':'')+(isFreelance?' Version allégée adaptée aux indépendants.':''),price:'À partir de 400€',rec:true});
+    packs.push({name:'Diagnostic Flash — Starter',desc:'Alternative rapide pour démarrer sans engagement et clarifier les priorités.',price:'À partir de 150€',rec:false});
+  }else{
+    packs.push({name:'Déploiement Guidé — Pack 3',desc:'Pilotage complet : sélection PA, raccordement ERP/logiciel, tests de conformité, formation équipe.'+(isCaisse?' Coordination directe avec votre éditeur de caisse incluse.':''),price:'À partir de 2 000€',rec:true});
+    packs.push({name:'Choix Éclairé — Pack 2',desc:'Comparatif indépendant des 108 PA selon votre profil exact'+(isCaisse?', critères de compatibilité logiciel de caisse inclus.':'.'),price:'À partir de 800€',rec:false});
+  }
+  document.getElementById('r-packs').innerHTML=packs.map(function(p){return'<div class="pack'+(p.rec?' rec':'')+'">  '+(p.rec?'<div class="pack-rec-lbl">Recommandé pour vous</div>':'')+'<div class="pack-name">'+p.name+'</div><div class="pack-desc">'+p.desc+'</div><div class="pack-price">'+p.price+' · Sur devis personnalisé</div></div>';}).join('');
+  var packName=packs[0].name;
+  var recapTxt=rows.map(function(r){return r[0]+' : '+r[1];}).join('\n');
+  var subject=encodeURIComponent('[Devis] '+packName+' — '+nom+(cie?' / '+cie:''));
+  var body=encodeURIComponent('Bonjour Benjamin,\n\nSuite à mon diagnostic en ligne, je souhaite en savoir plus sur l\'accompagnement "'+packName+'".\n\nMon profil :\n'+recapTxt+'\n\nScore de priorité : '+full+'/30 ('+badge+')\n\nCordialement,\n'+nom+(cie?'\n'+cie:'')+(mail?'\n'+mail:''));
+  document.getElementById('cta-main').onclick=function(){window.location.href='mailto:benjamin@lateliercurieux.fr?subject='+subject+'&body='+body;};
+  go(9);
+}
+</script>
+</body>
+</html>
