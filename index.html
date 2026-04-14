@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devis personnalisé — L'Atelier Curieux</title>
+<title>Devis personnalisé — L'Atelier Curyeux</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
@@ -104,13 +104,58 @@ body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;jus
 .fb-btn{margin-top:.75rem;padding:9px 22px;background:#1a1a1a;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
 .fb-btn:hover{background:#333}
 .fb-sent{display:none;background:#e8f3e0;color:#2d6b1a;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:500;margin-top:.75rem;line-height:1.5}
+/* Bloc multi-sélection néobanques / fintech */
+.multi-block{margin-top:.85rem;padding:14px;background:#eef5fd;border-radius:10px;border-left:3px solid #378add}
+.multi-label{font-size:13px;font-weight:600;color:#0c447c;margin-bottom:.35rem}
+.multi-hint{font-size:12px;color:#185fa5;margin-bottom:.7rem;line-height:1.5}
+.multi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.multi-choice{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;border:1px solid #c8dcf2;border-radius:8px;cursor:pointer;background:#fff;transition:border-color .12s,background .12s;min-height:44px}
+.multi-choice:hover{border-color:#378add;background:#f4f9ff}
+.multi-choice.selected{border-color:#378add;background:#e6f1fb}
+.multi-choice input{accent-color:#378add;margin-top:2px;flex-shrink:0;width:14px;height:14px}
+.multi-choice span{font-size:13px;color:#1a1a1a;line-height:1.4}
+.multi-choice .mn{font-weight:500;display:block}
+.multi-choice .ms{font-size:11px;color:#888;margin-top:2px;display:block}
+/* Responsive — tablette & mobile */
+@media (max-width:768px){
+  body{padding:1rem .75rem}
+  .card{padding:1.75rem 1.25rem;border-radius:12px}
+  .brand{margin-bottom:1.5rem;padding-bottom:1rem}
+  .q-label{font-size:18px;line-height:1.3}
+  .q-hint{font-size:13px;margin-bottom:1.25rem}
+  .choice{padding:12px 13px;min-height:48px}
+  .ct{font-size:14px}
+  .cs{font-size:12px}
+  .sub-block,.multi-block{padding:12px}
+  .multi-grid{grid-template-columns:1fr}
+  .nav{margin-top:1.5rem;padding-top:1rem;flex-wrap:wrap;gap:8px}
+  .btn-back,.btn-next{padding:11px 18px;font-size:13px;flex:1;min-height:44px}
+  .btn-next{order:2}
+  .btn-back{order:1}
+  .step-ctr{order:0;width:100%;text-align:center;margin-bottom:4px}
+  .r-name{font-size:19px}
+  .score-big{font-size:28px}
+  .score-card{padding:1rem 1.15rem}
+  .pack{padding:13px}
+  .cta-btn{padding:13px;font-size:14px}
+  .recap-line{font-size:12.5px;flex-wrap:wrap;gap:4px}
+  .rv{max-width:100%;text-align:left}
+  .stars{gap:6px;justify-content:center}
+  .star{font-size:34px;padding:2px 4px}
+}
+@media (max-width:380px){
+  .card{padding:1.5rem 1rem}
+  .q-label{font-size:17px}
+  .brand-name{font-size:14px}
+  .brand-sub{font-size:11px}
+}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="brand">
     <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></div>
-    <div><div class="brand-name">L'Atelier Curieux</div><div class="brand-sub">Conseil · Numérique · Facturation électronique</div></div>
+    <div><div class="brand-name">L'Atelier Curyeux</div><div class="brand-sub">Conseil · Numérique · Facturation électronique</div></div>
   </div>
   <div class="prog-bar"><div class="prog-fill" id="prog" style="width:12%"></div></div>
 
@@ -270,6 +315,31 @@ body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;jus
       <strong>Vous êtes concerné uniquement pour la réception</strong>
       Vous n'avez pas à émettre de factures électroniques à vos clients. En revanche, dès le 1er septembre 2026, vous devrez <strong>recevoir et traiter</strong> les factures de vos fournisseurs (grossiste, distributeur, fournisseur de matières premières…) via une Plateforme Agréée. Sans PA : 500 € puis 1 000 €/trimestre d'amende. Un accompagnement léger suffit.
     </div>
+
+    <!-- Multi-sélection néobanques / fintech / encaissement -->
+    <div class="multi-block">
+      <div class="multi-label">Utilisez-vous aussi un compte pro ou une solution d'encaissement avec facturation intégrée&nbsp;?</div>
+      <div class="multi-hint">Cochez toutes les solutions que vous utilisez actuellement (plusieurs choix possibles). Beaucoup proposent désormais la facturation Factur-X ou prévoient un raccordement PA.</div>
+      <div class="multi-grid">
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="qonto"><span><span class="mn">Qonto</span><span class="ms">Compte pro · Factur-X intégré</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="shine"><span><span class="mn">Shine</span><span class="ms">Compte pro (Société Générale)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="revolut"><span><span class="mn">Revolut Business</span><span class="ms">Compte pro multi-devises</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="finom"><span><span class="mn">Finom</span><span class="ms">Compte pro · Devis & factures</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="blank"><span><span class="mn">Blank</span><span class="ms">Compte pro (BNP Paribas)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="propulse"><span><span class="mn">Propulse by CA</span><span class="ms">Compte pro (Crédit Agricole)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="sumup"><span><span class="mn">SumUp Invoices</span><span class="ms">Encaissement + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="stripe"><span><span class="mn">Stripe Invoicing</span><span class="ms">Paiement en ligne + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="paypal"><span><span class="mn">PayPal Invoicing</span><span class="ms">Encaissement + factures pros</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="zettle"><span><span class="mn">Zettle (PayPal)</span><span class="ms">TPE mobile + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="pennylane"><span><span class="mn">Pennylane</span><span class="ms">Compta + facturation (PA)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="tiime"><span><span class="mn">Tiime</span><span class="ms">Compta + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="indy"><span><span class="mn">Indy</span><span class="ms">Compta indé + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="sellsy"><span><span class="mn">Sellsy</span><span class="ms">CRM + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="autre"><span><span class="mn">Autre solution</span><span class="ms">À préciser lors du rendez-vous</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="aucune"><span><span class="mn">Aucune</span><span class="ms">Je n'utilise pas ces outils</span></span></label>
+      </div>
+    </div>
+
     <div class="nav"><button class="btn-back" onclick="go(4)">← Retour</button><span class="step-ctr">5 / 8</span><button class="btn-next" onclick="go(6)">Suivant →</button></div>
   </div>
 
@@ -422,6 +492,42 @@ document.querySelectorAll('.sub-choice').forEach(function(c){
     inp.checked=true;c.classList.add('selected');updateCaisseAlert();
   });
 });
+// Multi-sélection (checkboxes fintech)
+document.querySelectorAll('.multi-choice').forEach(function(c){
+  c.addEventListener('click',function(e){
+    if(e.target.tagName==='INPUT')return;
+    var inp=c.querySelector('input[type=checkbox]');
+    if(!inp)return;
+    inp.checked=!inp.checked;
+    c.classList.toggle('selected',inp.checked);
+    handleFintechMutual(inp);
+  });
+  var inp=c.querySelector('input[type=checkbox]');
+  if(inp){
+    inp.addEventListener('change',function(){
+      c.classList.toggle('selected',inp.checked);
+      handleFintechMutual(inp);
+    });
+  }
+});
+// "Aucune" décoche tout, et toute autre case décoche "Aucune"
+function handleFintechMutual(inp){
+  if(inp.name!=='fintech')return;
+  if(inp.value==='aucune'&&inp.checked){
+    document.querySelectorAll('input[name="fintech"]').forEach(function(x){
+      if(x.value!=='aucune'){x.checked=false;var p=x.closest('.multi-choice');if(p)p.classList.remove('selected');}
+    });
+  } else if(inp.checked){
+    var none=document.querySelector('input[name="fintech"][value="aucune"]');
+    if(none&&none.checked){none.checked=false;var p=none.closest('.multi-choice');if(p)p.classList.remove('selected');}
+  }
+}
+function getFintechSelected(){
+  var labels={qonto:'Qonto',shine:'Shine',revolut:'Revolut Business',finom:'Finom',blank:'Blank',propulse:'Propulse by CA',sumup:'SumUp Invoices',stripe:'Stripe Invoicing',paypal:'PayPal Invoicing',zettle:'Zettle',pennylane:'Pennylane',tiime:'Tiime',indy:'Indy',sellsy:'Sellsy',autre:'Autre solution',aucune:'Aucune'};
+  var out=[];
+  document.querySelectorAll('input[name="fintech"]:checked').forEach(function(x){out.push(labels[x.value]||x.value);});
+  return out;
+}
 function showResult(){
   var profil=gv('profil')||'artisan';
   var tva=gv('tva')||'assujetti';
@@ -472,6 +578,8 @@ function showResult(){
   var tvM={assujetti:'Assujetti à la TVA',franchise:'Franchise en base (art. 293B)',nesaispas:'À clarifier'};
   var rows=[['Profil',pm[profil]||profil],['Statut TVA',tvM[tva]||tva],['Volume factures',volume===1?'< 20/mois':volume===2?'20–100/mois':'> 100/mois'],['Mode de facturation',mm[mode]||mode]];
   if(isCaisse&&caisse)rows.push(['Logiciel de caisse',cm[caisse]||caisse]);
+  var fintechSel=getFintechSelected();
+  if(fintechSel.length>0)rows.push(['Comptes pro / fintech',fintechSel.join(', ')]);
   rows.push(['Plateforme Agréée',paM[String(pa)]||'—'],['Référent interne',refM[String(ref)]||'—'],['Horizon',hM[horizon]||horizon]);
   document.getElementById('r-recap').innerHTML=rows.map(function(r){return'<div class="recap-line"><span class="rk">'+r[0]+'</span><span class="rv">'+r[1]+'</span></div>';}).join('');
   var packs=[];
