@@ -318,23 +318,32 @@ body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;jus
 
     <!-- Multi-sélection néobanques / fintech / encaissement -->
     <div class="multi-block">
-      <div class="multi-label">Utilisez-vous aussi un compte pro ou une solution d'encaissement avec facturation intégrée&nbsp;?</div>
-      <div class="multi-hint">Cochez toutes les solutions que vous utilisez actuellement (plusieurs choix possibles). Beaucoup proposent désormais la facturation Factur-X ou prévoient un raccordement PA.</div>
+      <div class="multi-label">Utilisez-vous un compte pro, une solution bancaire ou d'encaissement avec facturation intégrée&nbsp;?</div>
+      <div class="multi-hint">Cochez toutes les solutions que vous utilisez actuellement (plusieurs choix possibles). De nombreuses banques proposent désormais une offre de facturation électronique (parfois une Plateforme Agréée intégrée). Vérifier si votre banque couvre déjà vos besoins peut éviter un abonnement en double.</div>
       <div class="multi-grid">
+        <!-- Offres bancaires (banques traditionnelles) -->
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="kolecto"><span><span class="mn">Kolecto</span><span class="ms">Crédit Agricole · Facturation + PA</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="efactures_cm"><span><span class="mn">e-factures CM / CIC</span><span class="ms">Crédit Mutuel · PA Euro-Information</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="vizup"><span><span class="mn">Vizup (OneUp)</span><span class="ms">Société Générale · Factur-X</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="bpce_ipaidthat"><span><span class="mn">Gestion de factures BPCE</span><span class="ms">Banque Pop. / Caisse d'Épargne · iPaidThat</span></span></label>
+        <!-- Néobanques / comptes pro -->
         <label class="multi-choice"><input type="checkbox" name="fintech" value="qonto"><span><span class="mn">Qonto</span><span class="ms">Compte pro · Factur-X intégré</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="shine"><span><span class="mn">Shine</span><span class="ms">Compte pro (Société Générale)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="propulse"><span><span class="mn">Propulse by CA</span><span class="ms">Compte pro (Crédit Agricole)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="blank"><span><span class="mn">Blank</span><span class="ms">Compte pro (BNP Paribas)</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="revolut"><span><span class="mn">Revolut Business</span><span class="ms">Compte pro multi-devises</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="finom"><span><span class="mn">Finom</span><span class="ms">Compte pro · Devis & factures</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="blank"><span><span class="mn">Blank</span><span class="ms">Compte pro (BNP Paribas)</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="propulse"><span><span class="mn">Propulse by CA</span><span class="ms">Compte pro (Crédit Agricole)</span></span></label>
+        <!-- PA comptables / facturation -->
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="pennylane"><span><span class="mn">Pennylane</span><span class="ms">Compta + facturation (PA)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="ipaidthat"><span><span class="mn">iPaidThat</span><span class="ms">Plateforme Agréée (brique BPCE)</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="tiime"><span><span class="mn">Tiime</span><span class="ms">Compta + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="indy"><span><span class="mn">Indy</span><span class="ms">Compta indé + facturation</span></span></label>
+        <label class="multi-choice"><input type="checkbox" name="fintech" value="sellsy"><span><span class="mn">Sellsy</span><span class="ms">CRM + facturation</span></span></label>
+        <!-- Encaissement -->
         <label class="multi-choice"><input type="checkbox" name="fintech" value="sumup"><span><span class="mn">SumUp Invoices</span><span class="ms">Encaissement + facturation</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="stripe"><span><span class="mn">Stripe Invoicing</span><span class="ms">Paiement en ligne + facturation</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="paypal"><span><span class="mn">PayPal Invoicing</span><span class="ms">Encaissement + factures pros</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="zettle"><span><span class="mn">Zettle (PayPal)</span><span class="ms">TPE mobile + facturation</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="pennylane"><span><span class="mn">Pennylane</span><span class="ms">Compta + facturation (PA)</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="tiime"><span><span class="mn">Tiime</span><span class="ms">Compta + facturation</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="indy"><span><span class="mn">Indy</span><span class="ms">Compta indé + facturation</span></span></label>
-        <label class="multi-choice"><input type="checkbox" name="fintech" value="sellsy"><span><span class="mn">Sellsy</span><span class="ms">CRM + facturation</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="autre"><span><span class="mn">Autre solution</span><span class="ms">À préciser lors du rendez-vous</span></span></label>
         <label class="multi-choice"><input type="checkbox" name="fintech" value="aucune"><span><span class="mn">Aucune</span><span class="ms">Je n'utilise pas ces outils</span></span></label>
       </div>
@@ -347,10 +356,10 @@ body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;jus
   <div class="step" id="s6">
     <div class="q-num">Étape 6 / 8</div>
     <div class="q-label">Avez-vous déjà choisi une Plateforme Agréée ?</div>
-    <div class="q-hint">La PA est le canal obligatoire pour recevoir — et émettre si vous avez des clients pros — des factures électroniques. 108 plateformes sont immatriculées par la DGFiP.</div>
+    <div class="q-hint">La PA est le canal obligatoire pour recevoir — et émettre si vous avez des clients pros — des factures électroniques. 112 plateformes sont immatriculées par la DGFiP.</div>
     <div class="choices">
       <label class="choice"><input type="radio" name="pa" value="1"><span><span class="ct">Oui, déjà choisie et raccordée</span><span class="cs">Vous êtes en avance — une vérification de conformité reste recommandée</span></span></label>
-      <label class="choice"><input type="radio" name="pa" value="2"><span><span class="ct">En cours de sélection</span><span class="cs">Face aux 108 PA immatriculées, un comparatif indépendant peut vous faire gagner du temps et éviter les erreurs</span></span></label>
+      <label class="choice"><input type="radio" name="pa" value="2"><span><span class="ct">En cours de sélection</span><span class="cs">Face aux 112 PA immatriculées, un comparatif indépendant peut vous faire gagner du temps et éviter les erreurs</span></span></label>
       <label class="choice"><input type="radio" name="pa" value="3"><span><span class="ct">Non, pas encore commencé</span><span class="cs">Sans PA déclarée : 500 € d'amende puis 1 000 €/trimestre</span></span></label>
       <label class="choice"><input type="radio" name="pa" value="3"><span><span class="ct">Je ne connais pas ce terme</span><span class="cs">C'est précisément pour ça qu'un diagnostic s'impose en priorité</span></span></label>
     </div>
@@ -523,7 +532,7 @@ function handleFintechMutual(inp){
   }
 }
 function getFintechSelected(){
-  var labels={qonto:'Qonto',shine:'Shine',revolut:'Revolut Business',finom:'Finom',blank:'Blank',propulse:'Propulse by CA',sumup:'SumUp Invoices',stripe:'Stripe Invoicing',paypal:'PayPal Invoicing',zettle:'Zettle',pennylane:'Pennylane',tiime:'Tiime',indy:'Indy',sellsy:'Sellsy',autre:'Autre solution',aucune:'Aucune'};
+  var labels={kolecto:'Kolecto (Crédit Agricole)',efactures_cm:'e-factures CM / CIC',vizup:'Vizup — OneUp (Société Générale)',bpce_ipaidthat:'Gestion de factures BPCE (iPaidThat)',qonto:'Qonto',shine:'Shine',revolut:'Revolut Business',finom:'Finom',blank:'Blank',propulse:'Propulse by CA',sumup:'SumUp Invoices',stripe:'Stripe Invoicing',paypal:'PayPal Invoicing',zettle:'Zettle',pennylane:'Pennylane',ipaidthat:'iPaidThat',tiime:'Tiime',indy:'Indy',sellsy:'Sellsy',autre:'Autre solution',aucune:'Aucune'};
   var out=[];
   document.querySelectorAll('input[name="fintech"]:checked').forEach(function(x){out.push(labels[x.value]||x.value);});
   return out;
@@ -590,7 +599,7 @@ function showResult(){
     packs.push({name:'Diagnostic Flash — Starter',desc:'Alternative rapide pour démarrer sans engagement et clarifier les priorités.',price:'À partir de 150€',rec:false});
   }else{
     packs.push({name:'Déploiement Guidé — Pack 3',desc:'Pilotage complet : sélection PA, raccordement ERP/logiciel, tests de conformité, formation équipe.'+(isCaisse?' Coordination directe avec votre éditeur de caisse incluse.':''),price:'À partir de 2 000€',rec:true});
-    packs.push({name:'Choix Éclairé — Pack 2',desc:'Comparatif indépendant des 108 PA selon votre profil exact'+(isCaisse?', critères de compatibilité logiciel de caisse inclus.':'.'),price:'À partir de 800€',rec:false});
+    packs.push({name:'Choix Éclairé — Pack 2',desc:'Comparatif indépendant des 112 PA selon votre profil exact'+(isCaisse?', critères de compatibilité logiciel de caisse inclus.':'.'),price:'À partir de 800€',rec:false});
   }
   document.getElementById('r-packs').innerHTML=packs.map(function(p){return'<div class="pack'+(p.rec?' rec':'')+'">  '+(p.rec?'<div class="pack-rec-lbl">Recommandé pour vous</div>':'')+'<div class="pack-name">'+p.name+'</div><div class="pack-desc">'+p.desc+'</div><div class="pack-price">'+p.price+' · Sur devis personnalisé</div></div>';}).join('');
   var packName=packs[0].name;
