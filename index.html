@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devis personnalisé — L'Atelier Curyeux</title>
+<title>Auto-diagnostic facturation électronique — L'Atelier Curyeux</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
@@ -410,8 +410,9 @@ body{background:#f5f4f0;min-height:100vh;display:flex;align-items:flex-start;jus
     <div class="recap-blk" id="r-recap"></div>
     <div class="sec-title">Accompagnement recommandé</div>
     <div id="r-packs"></div>
-    <button class="cta-btn" id="cta-main">Envoyer ma demande de devis →</button>
-    <div class="cta-note">Réponse sous 48h · Sans engagement · 100% confidentiel</div>
+    <button class="cta-btn" id="cta-main">Envoyer ma demande par email →</button>
+    <a class="cta-btn" id="cta-rdv" href="https://lateliercuryeux.com/contact?niveau=diagnostic" style="display:block;text-decoration:none;background:#4a7c6f;margin-top:10px">Réserver mon Diagnostic Flash — 150 € →</a>
+    <div class="cta-note">Réponse sous 48h · Premier échange offert · 100% confidentiel</div>
     <div class="feedback-section">
       <div class="feedback-title">Donnez votre avis — version bêta</div>
       <div class="feedback-sub">Vous testez ce formulaire pour aider Benjamin à l'améliorer avant le lancement. Votre retour compte vraiment !</div>
@@ -439,7 +440,7 @@ function sendFeedback(){
   var profil=gv('profil')||'—';
   var subject=encodeURIComponent('[Bêta test] Retour formulaire — '+note+' — '+nom);
   var body=encodeURIComponent('Testeur : '+nom+'\nStructure : '+cie+'\nProfil sélectionné : '+profil+'\nNote : '+note+'\n\nCommentaire :\n'+txt);
-  window.location.href='mailto:latelier.curyeux@gmail.com?subject='+subject+'&body='+body;
+  window.location.href='mailto:contact@lateliercuryeux.com?subject='+subject+'&body='+body;
   document.getElementById('fb-sent').style.display='block';
 }
 var progs=[12,25,37,50,62,75,87,100];
@@ -606,7 +607,7 @@ function showResult(){
   var recapTxt=rows.map(function(r){return r[0]+' : '+r[1];}).join('\n');
   var subject=encodeURIComponent('[Devis] '+packName+' — '+nom+(cie?' / '+cie:''));
   var body=encodeURIComponent('Bonjour Benjamin,\n\nSuite à mon diagnostic en ligne, je souhaite en savoir plus sur l\'accompagnement "'+packName+'".\n\nMon profil :\n'+recapTxt+'\n\nScore de priorité : '+full+'/30 ('+badge+')\n\nCordialement,\n'+nom+(cie?'\n'+cie:'')+(mail?'\n'+mail:''));
-  document.getElementById('cta-main').onclick=function(){window.location.href='mailto:latelier.curyeux@gmail.com?subject='+subject+'&body='+body;};
+  document.getElementById('cta-main').onclick=function(){window.location.href='mailto:contact@lateliercuryeux.com?subject='+subject+'&body='+body;};
   go(9);
 }
 </script>
